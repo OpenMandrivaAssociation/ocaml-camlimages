@@ -1,7 +1,7 @@
 %define base_name	camlimages
 %define name		ocaml-%{base_name}
 %define version		2.20
-%define release		%mkrel 9
+%define release		%mkrel 10
 
 Name: 		%{name}
 Version: 	%{version}
@@ -13,7 +13,7 @@ URL:		http://pauillac.inria.fr/camlimages
 Source:		ftp://ftp.inria.fr/INRIA/caml-light/bazar-ocaml/%{base_name}-2.2.0.tar.bz2
 Patch:		ocaml-camlimages-uint16.patch
 BuildRequires:	ocaml
-BuildRequires:	ocaml-lablgtk-devel
+BuildRequires:	ocaml-lablgl-devel
 BuildRequires:	ocaml-lablgtk2-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}
 
@@ -23,9 +23,9 @@ CamlImages is an image processing library for Objective Caml
 %package devel
 Summary:	Image processing library for Objective Caml
 Group:		Development/Other
-Provides:	%{base_name} = %{version}-%{release}
-Obsoletes:	%{name}
-Provides:	%{name}
+Requires:	%{name} = %{version}-%{release}
+Requires:	ocaml-lablgl-devel
+Requires:	ocaml-lablgtk2-devel
 
 %description devel
 CamlImages is an image processing library for Objective Caml
@@ -35,20 +35,25 @@ CamlImages is an image processing library for Objective Caml
 %patch -p0
 
 %build
-#%configure --disable-rpath
-./configure
+%configure2_5x \
+    --with-lablgl=%{ocaml_sitelib}/lablgl \
+    --with-lablgtk2=%{ocaml_sitelib}/lablgtk2
 make all opt
 
 %install
 rm -rf %{buildroot}
-make LIBDIR=%{buildroot}%{_libdir}/ocaml/%{base_name} install
+make LIBDIR=%{buildroot}%{ocaml_sitelib}/%{base_name} install
 
 %clean
 rm -rf %{buildroot}
 
-%files devel
+%files
 %defattr(-,root,root)
 %doc Announce CHANGES INSTALL LICENSE README
-%{_libdir}/ocaml/%{base_name}
+%dir %{ocaml_sitelib}/%{base_name}
+%{ocaml_sitelib}/%{base_name}/*.cmi
 
-
+%files devel
+%defattr(-,root,root)
+%{ocaml_sitelib}/%{base_name}/*
+%exclude %{ocaml_sitelib}/%{base_name}/*.cmi
