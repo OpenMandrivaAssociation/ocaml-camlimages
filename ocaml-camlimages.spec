@@ -15,6 +15,7 @@ Patch:		ocaml-camlimages-uint16.patch
 BuildRequires:	ocaml
 BuildRequires:	ocaml-lablgl-devel
 BuildRequires:	ocaml-lablgtk2-devel
+BuildRoot:      %{_tmppath}/%{name}-%{version}
 
 %description 
 CamlImages is an image processing library for Objective Caml
