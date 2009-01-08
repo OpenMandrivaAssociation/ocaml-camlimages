@@ -71,6 +71,7 @@ rm -rf %{buildroot}
 
 %files devel
 %defattr(-,root,root)
+%doc doc/*.{html,jpg}
 %{_libdir}/ocaml/%{base_name}/*
 %exclude %{_libdir}/ocaml/%{base_name}/META
 %exclude %{_libdir}/ocaml/%{base_name}/*.cmi
