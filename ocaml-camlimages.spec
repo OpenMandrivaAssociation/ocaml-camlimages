@@ -21,6 +21,7 @@ BuildRequires:  libpng-devel
 BuildRequires:  libjpeg-devel
 BuildRequires:  libxpm-devel
 #BuildRequires:  ghostscript-devel
+BuildRequires:  libgs-devel
 BuildRequires:  freetype-devel
 BuildRequires:  libungif-devel
 BuildRequires:  libtiff-devel
