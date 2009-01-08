@@ -36,13 +36,13 @@ CamlImages is an image processing library for Objective Caml
 
 %build
 %configure2_5x \
-    --with-lablgl=%{ocaml_sitelib}/lablgl \
-    --with-lablgtk2=%{ocaml_sitelib}/lablgtk2
+    --with-lablgl=%{_libdir}/ocaml/lablgl \
+    --with-lablgtk2=%{_libdir}/ocaml/lablgtk2
 make all opt
 
 %install
 rm -rf %{buildroot}
-make LIBDIR=%{buildroot}%{ocaml_sitelib}/%{base_name} install
+make LIBDIR=%{buildroot}/%{_libdir}/ocaml/%{base_name} install
 
 %clean
 rm -rf %{buildroot}
@@ -50,10 +50,14 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc Announce CHANGES INSTALL LICENSE README
-%dir %{ocaml_sitelib}/%{base_name}
-%{ocaml_sitelib}/%{base_name}/*.cmi
+%dir %{_libdir}/ocaml/%{base_name}
+%{_libdir}/ocaml/%{base_name}/*.cmi
+%{_libdir}/ocaml/%{base_name}/*.cma
+%{_libdir}/ocaml/%{base_name}/*.so
 
 %files devel
 %defattr(-,root,root)
-%{ocaml_sitelib}/%{base_name}/*
-%exclude %{ocaml_sitelib}/%{base_name}/*.cmi
+%{_libdir}/ocaml/%{base_name}/*
+%exclude %{_libdir}/ocaml/%{base_name}/*.cmi
+%exclude %{_libdir}/ocaml/%{base_name}/*.cma
+%exclude %{_libdir}/ocaml/%{base_name}/*.so
