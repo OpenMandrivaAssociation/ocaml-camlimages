@@ -1,7 +1,7 @@
 %define base_name	camlimages
 %define name		ocaml-%{base_name}
 %define version		3.0.1
-%define release		%mkrel 1
+%define release		%mkrel 2
 
 Name: 		%{name}
 Version: 	%{version}
