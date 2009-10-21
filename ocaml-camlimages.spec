@@ -50,8 +50,8 @@ CamlImages is an image processing library for Objective Caml
 %patch0 -p1
 mv examples/liv/display.ml examples/liv/livdisplay.ml
 
-%patch0 -p1 -b .CVE-2009-2295
-%patch1 -p1 -b .CVE-2009-3296
+%patch1 -p1 -b .CVE-2009-2295
+%patch2 -p1 -b .CVE-2009-3296
 
 %build
 %configure2_5x \
