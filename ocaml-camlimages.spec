@@ -1,7 +1,7 @@
 %define base_name	camlimages
 %define name		ocaml-%{base_name}
-%define version		3.0.1
-%define release		%mkrel 4
+%define version		3.0.2
+%define release		%mkrel 1
 
 Name: 		%{name}
 Version: 	%{version}
@@ -9,14 +9,12 @@ Release: 	%{release}
 License: 	LGPL
 Summary:	Image processing library for Objective Caml
 Group:		Development/Other
-URL:		http://gallium.inria.fr/camlimages/
-Source:		http://gallium.inria.fr/camlimages/%{base_name}-%{version}.tar.bz2
-Patch0:         camlimages-3.0.1-display-module.patch
-# https://bugzilla.redhat.com/show_bug.cgi?id=509531#c4
-Patch1:         camlimages-oversized-png-check-CVE-2009-2295.patch
+URL:		http://cristal.inria.fr/camlimages/eng.html
+Source:		http://cristal.inria.fr/camlimages/%{base_name}-%{version}.tgz
+Patch0: camlimages-3.0.2-display-module.patch 
 # https://bugzilla.redhat.com/show_bug.cgi?id=528732
-Patch2:         camlimages-oversized-tiff-check-CVE-2009-3296.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}
+Patch2: camlimages-oversized-tiff-check-CVE-2009-3296.patch
+Patch3: camlimages-3.0.2-ocaml-autoconf.patch
 BuildRequires:  ocaml >= 3.10.1
 BuildRequires:	ocaml-lablgtk2-devel
 BuildRequires:  gtk2-devel
@@ -28,7 +26,8 @@ BuildRequires:  libgs-devel
 BuildRequires:  freetype-devel
 BuildRequires:  libungif-devel
 BuildRequires:  libtiff-devel
-
+BuildRequires:  ocaml-autoconf 
+BuildRoot:      %{_tmppath}/%{name}-%{version}
 
 %description 
 CamlImages is an image processing library for Objective Caml
@@ -44,14 +43,16 @@ CamlImages is an image processing library for Objective Caml
 
 %prep
 %setup -q -n %{base_name}-%{version}
+%patch0 -p1
+%patch2 -p1 -b .CVE-2009-3296
+%patch3 -p1
+aclocal -I .
+automake
+autoconf
 
 # Gdk.Display submodule clashes with the Display module in
 # the examples/liv directory, so rename it:
-%patch0 -p1
 mv examples/liv/display.ml examples/liv/livdisplay.ml
-
-%patch1 -p1 -b .CVE-2009-2295
-%patch2 -p1 -b .CVE-2009-3296
 
 %build
 %configure2_5x \
