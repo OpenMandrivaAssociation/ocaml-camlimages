@@ -1,0 +1,12 @@
+--- camlimages-3.0.2/configure.ac	2009-10-26 12:42:04.000000000 +0000
++++ camlimages-3.0.2.autoconf/configure.ac	2010-01-12 15:23:49.179300765 +0000
+@@ -4,8 +4,7 @@
+ AM_INIT_AUTOMAKE([foreign])
+ 
+ # Check ocaml
+-AC_PROG_OCAML([3.08])
+-AC_PROG_OCAML_TOOL(OCAMLMKLIB, ocamlmklib)
++AC_PROG_OCAML
+ AC_SUBST(OCAMLLIB)
+ 
+ # Check versions to build

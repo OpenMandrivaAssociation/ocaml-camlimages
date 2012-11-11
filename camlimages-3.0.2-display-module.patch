@@ -1,0 +1,23 @@
+--- camlimages-3.0.2/examples/liv/liv.ml	2009-10-26 12:42:03.000000000 +0000
++++ camlimages-3.0.2.display/examples/liv/liv.ml	2010-01-12 15:13:21.414300958 +0000
+@@ -19,7 +19,7 @@
+ ;;
+ *)
+ 
+-module D = Display
++module D = Livdisplay
+ open D
+ 
+ open Gc
+diff -ur camlimages-3.0.1.orig/examples/liv/Makefile.am camlimages-3.0.1/examples/liv/Makefile.am
+--- camlimages-3.0.1.orig/examples/liv/Makefile.am	2007-05-21 19:54:32.000000000 +0100
++++ camlimages-3.0.1/examples/liv/Makefile.am	2008-11-03 17:15:54.000000000 +0000
+@@ -23,7 +23,7 @@
+ 	       seq.ml \
+ 	       tout.ml \
+ 	       enhance.ml \
+-	       display.ml \
++	       livdisplay.ml \
+ 	       viewer.ml \
+ 	       edge.ml \
+ 	       pathfind.ml \
