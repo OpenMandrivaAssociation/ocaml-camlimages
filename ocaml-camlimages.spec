@@ -1,86 +1,93 @@
-%define base_name	camlimages
-%define name		ocaml-%{base_name}
-%define version		3.0.2
-%define release		%mkrel 1
+#empty-debuginfo-package
+%define debug_package %{nil}
+%define base_name camlimages
 
-Name: 		%{name}
-Version: 	%{version}
-Release: 	%{release}
-License: 	LGPL
 Summary:	Image processing library for Objective Caml
+Name:		ocaml-%{base_name}
+Version:	4.1.0
+Release:	1
+License:	LGPLv2+
 Group:		Development/Other
-URL:		http://cristal.inria.fr/camlimages/eng.html
-Source:		http://cristal.inria.fr/camlimages/%{base_name}-%{version}.tgz
-Patch0: camlimages-3.0.2-display-module.patch 
-# https://bugzilla.redhat.com/show_bug.cgi?id=528732
-Patch2: camlimages-oversized-tiff-check-CVE-2009-3296.patch
-Patch3: camlimages-3.0.2-ocaml-autoconf.patch
-BuildRequires:  ocaml >= 3.10.1
+Url:		http://cristal.inria.fr/camlimages/eng.html
+Source0:	https://bitbucket.org/camlspotter/camlimages/get/%{version}.tar.gz
+# This file isn't published any more (that I could find).
+# It's probably dated but at least should provide some info on how to
+# use the library.
+Source1:	camlimages-2.2.0-htmlref.tar.gz
+# https://bitbucket.org/camlspotter/camlimages/issue/9
+Patch0:		ocaml-camlimages-4.1.0-exifcheck.patch
+Patch1:		ocaml-camlimages-4.1.0-ocaml3.patch
+
+BuildRequires:	chrpath
+BuildRequires:	ocaml
+BuildRequires:	ocaml-autoconf
+BuildRequires:	ocaml-omake
+BuildRequires:	jpeg-devel
+BuildRequires:	libgs-devel
+BuildRequires:	ocaml-findlib-devel
 BuildRequires:	ocaml-lablgtk2-devel
-BuildRequires:  gtk2-devel
-BuildRequires:  libpng-devel
-BuildRequires:  libjpeg-devel
-BuildRequires:  libxpm-devel
-#BuildRequires:  ghostscript-devel
-BuildRequires:  libgs-devel
-BuildRequires:  freetype-devel
-BuildRequires:  libungif-devel
-BuildRequires:  libtiff-devel
-BuildRequires:  ocaml-autoconf 
-BuildRoot:      %{_tmppath}/%{name}-%{version}
+BuildRequires:	ungif-devel
+BuildRequires:	pkgconfig(freetype2)
+BuildRequires:	pkgconfig(gdk-2.0)
+BuildRequires:	pkgconfig(libexif)
+BuildRequires:	pkgconfig(libpng)
+BuildRequires:	pkgconfig(libtiff-4)
+BuildRequires:	pkgconfig(xpm)
+BuildRequires:	pkgconfig(zlib)
 
-%description 
-CamlImages is an image processing library for Objective Caml
-
-%package devel
-Summary:	Image processing library for Objective Caml
-Group:		Development/Other
-Requires:	%{name} = %{version}-%{release}
-Requires:	ocaml-lablgtk2-devel
-
-%description devel
-CamlImages is an image processing library for Objective Caml
-
-%prep
-%setup -q -n %{base_name}-%{version}
-%patch0 -p1
-%patch2 -p1 -b .CVE-2009-3296
-%patch3 -p1
-aclocal -I .
-automake
-autoconf
-
-# Gdk.Display submodule clashes with the Display module in
-# the examples/liv directory, so rename it:
-mv examples/liv/display.ml examples/liv/livdisplay.ml
-
-%build
-%configure2_5x \
-    --without-lablgtk \
-    --with-lablgtk2 \
-    --with-lablgtk2-dir=%{_libdir}/ocaml/lablgtk2
-make
-
-%install
-rm -rf %{buildroot}
-make install ocamlsitelibdir=%{_libdir}/ocaml/camlimages DESTDIR=%{buildroot}
-
-%clean
-rm -rf %{buildroot}
+%description
+This is an image processing library, which provides some basic
+functions of image processing and loading/saving various image file
+formats. In addition the library can handle huge images that cannot be
+(or can hardly be) stored into the memory (the library automatically
+creates swap files and escapes them to reduce the memory usage).
 
 %files
-%defattr(-,root,root)
-%doc INSTALL README
-%dir %{_libdir}/ocaml/%{base_name}
-%{_libdir}/ocaml/%{base_name}/META
-%{_libdir}/ocaml/%{base_name}/*.cmi
-%{_libdir}/ocaml/%{base_name}/*.cma
+%doc README License.txt
+%{_libdir}/ocaml/camlimages
+%exclude %{_libdir}/ocaml/camlimages/*.a
+%exclude %{_libdir}/ocaml/camlimages/*.cmxa
+%exclude %{_libdir}/ocaml/camlimages/*.mli
 %{_libdir}/ocaml/stublibs/*.so
+%{_libdir}/ocaml/stublibs/*.so.owner
+
+#----------------------------------------------------------------------------
+
+%package devel
+Summary:	Development files for camlimages
+Group:		Development/Other
+Requires:	%{name} = %{EVRD}
+
+%description devel
+The camlimages-devel package provides libraries and headers for
+developing applications using camlimages
+
+Includes documentation provided by ocamldoc
 
 %files devel
-%defattr(-,root,root)
-%doc doc/*.{html,jpg}
-%{_libdir}/ocaml/%{base_name}/*
-%exclude %{_libdir}/ocaml/%{base_name}/META
-%exclude %{_libdir}/ocaml/%{base_name}/*.cmi
-%exclude %{_libdir}/ocaml/%{base_name}/*.cma
+%doc htmlref
+%{_libdir}/ocaml/camlimages/*.a
+%{_libdir}/ocaml/camlimages/*.cmxa
+%{_libdir}/ocaml/camlimages/*.mli
+
+#----------------------------------------------------------------------------
+
+%prep
+%setup -q -n camlspotter-camlimages-668faa3494fe
+%setup -q -T -D -a 1 -n camlspotter-camlimages-668faa3494fe
+%patch0 -p1
+%patch1 -p1
+
+%build
+omake CFLAGS="%{optflags}"
+
+%install
+# These rules work if the library uses 'ocamlfind install' to install itself.
+export DESTDIR=%{buildroot}
+export OCAMLFIND_DESTDIR=%{buildroot}%{_libdir}/ocaml
+mkdir -p $OCAMLFIND_DESTDIR $OCAMLFIND_DESTDIR/stublibs
+omake install
+
+mkdir -p %{buildroot}%{_datadir}/doc/ocaml-camlimages
+cp -pr License.txt htmlref %{buildroot}%{_datadir}/doc/ocaml-camlimages
+

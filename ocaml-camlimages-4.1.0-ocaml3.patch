@@ -1,0 +1,12 @@
+diff -urN camlspotter-camlimages-668faa3494fe/src/exif.ml camlspotter-camlimages-patched/src/exif.ml
+--- camlspotter-camlimages-668faa3494fe/src/exif.ml	2013-07-09 16:48:13.000000000 +1100
++++ camlspotter-camlimages-patched/src/exif.ml	2014-02-10 21:38:27.632763060 +1100
+@@ -18,7 +18,7 @@
+     | Big -> "Big"
+     | Little -> "Little"
+ 
+-  let sys = if Sys.big_endian then Big else Little
++  let sys = Little
+ end
+ 
+ module IFD = struct
