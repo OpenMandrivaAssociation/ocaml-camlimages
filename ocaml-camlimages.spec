@@ -19,6 +19,7 @@ Patch0:		ocaml-camlimages-4.1.0-exifcheck.patch
 Patch1:		ocaml-camlimages-4.1.0-ocaml3.patch
 
 BuildRequires:	chrpath
+BuildRequires:	ghostscript
 BuildRequires:	ocaml
 BuildRequires:	ocaml-autoconf
 BuildRequires:	ocaml-omake
@@ -34,6 +35,7 @@ BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	pkgconfig(xpm)
 BuildRequires:	pkgconfig(zlib)
+Requires:	ghostscript
 
 %description
 This is an image processing library, which provides some basic
