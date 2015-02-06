@@ -5,7 +5,7 @@
 Summary:	Image processing library for Objective Caml
 Name:		ocaml-%{base_name}
 Version:	4.1.0
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		Development/Other
 Url:		http://cristal.inria.fr/camlimages/eng.html
