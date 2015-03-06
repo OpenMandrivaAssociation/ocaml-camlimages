@@ -1,0 +1,66 @@
+diff -urN camlspotter-camlimages-668faa3494fe/src/gifread.c camlspotter-camlimages-668faa3494fe-patched/src/gifread.c
+--- camlspotter-camlimages-668faa3494fe/src/gifread.c	2013-07-09 16:48:13.000000000 +1100
++++ camlspotter-camlimages-668faa3494fe-patched/src/gifread.c	2014-05-31 00:02:57.885721509 +1100
+@@ -140,7 +140,11 @@
+   GifFileType *GifFile;
+   int i;
+ 
++#if GIFLIB_MAJOR >= 5
++  if((GifFile = DGifOpenFileName( String_val(name), NULL )) == NULL){
++#else
+   if((GifFile = DGifOpenFileName( String_val(name) )) == NULL){
++#endif
+     failwith("DGifOpenFileName");
+   }
+ 
+@@ -161,7 +165,11 @@
+      segmentation faults */
+   ((GifFileType *)hdl)->Image.ColorMap = NULL; 
+ 
++#if GIFLIB_MAJOR * 100 + GIFLIB_MINOR >= 501
++  DGifCloseFile( (GifFileType *) hdl, NULL );
++#else
+   DGifCloseFile( (GifFileType *) hdl );
++#endif
+   CAMLreturn0;
+ }
+ 
+diff -urN camlspotter-camlimages-668faa3494fe/src/gifwrite.c camlspotter-camlimages-668faa3494fe-patched/src/gifwrite.c
+--- camlspotter-camlimages-668faa3494fe/src/gifwrite.c	2013-07-09 16:48:13.000000000 +1100
++++ camlspotter-camlimages-668faa3494fe-patched/src/gifwrite.c	2014-05-31 00:03:58.063739725 +1100
+@@ -51,7 +51,11 @@
+ fprintf(stderr, "Creating map with length = %d ...\n", len);
+ fflush(stderr);
+ */
++#if GIFLIB_MAJOR >= 5
++  cmapobj = GifMakeMapObject( len, NULL );
++#else
+   cmapobj = MakeMapObject( len, NULL );
++#endif
+   for(i=0; i< len; i++){
+     cmapobj->Colors[i].Red   = Int_val(Field(Field(cmap,i),0));
+     cmapobj->Colors[i].Green = Int_val(Field(Field(cmap,i),1));
+@@ -67,7 +71,11 @@
+ 
+   GifFileType *GifFileOut;
+ 
++#if GIFLIB_MAJOR >= 5
++  if ((GifFileOut = EGifOpenFileName( String_val( name ), 0, NULL) )== NULL) {
++#else
+   if ((GifFileOut = EGifOpenFileName( String_val( name ), 0) )== NULL) {
++#endif
+     failwith("EGifOpenFileName");
+   }
+   /* gcc -fwritable-strings is required to compile libungif */
+@@ -87,7 +95,11 @@
+      segmentation faults */
+   ((GifFileType *)hdl)->Image.ColorMap = NULL; 
+ 
++#if GIFLIB_MAJOR * 100 + GIFLIB_MINOR >= 501
++  EGifCloseFile( (GifFileType *) hdl, NULL );
++#else
+   EGifCloseFile( (GifFileType *) hdl );
++#endif
+   CAMLreturn0;
+ }
+ 

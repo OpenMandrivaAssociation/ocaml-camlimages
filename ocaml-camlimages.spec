@@ -5,9 +5,9 @@
 Summary:	Image processing library for Objective Caml
 Name:		ocaml-%{base_name}
 Version:	4.1.0
-Release:	2
+Release:	7
 License:	LGPLv2+
-Group:		Development/Other
+Group:		Development/OCaml
 Url:		http://cristal.inria.fr/camlimages/eng.html
 Source0:	https://bitbucket.org/camlspotter/camlimages/get/%{version}.tar.gz
 # This file isn't published any more (that I could find).
@@ -17,18 +17,19 @@ Source1:	camlimages-2.2.0-htmlref.tar.gz
 # https://bitbucket.org/camlspotter/camlimages/issue/9
 Patch0:		ocaml-camlimages-4.1.0-exifcheck.patch
 Patch1:		ocaml-camlimages-4.1.0-ocaml3.patch
-Patch2:		ocaml-camlimages-4.1.0-kill-warn-error.patch
+Patch2:		ocaml-camlimages-4.1.0-giflib51.patch
 
 BuildRequires:	chrpath
 BuildRequires:	ghostscript
 BuildRequires:	ocaml
 BuildRequires:	ocaml-autoconf
 BuildRequires:	ocaml-omake
+BuildRequires:	ocaml-x11
+BuildRequires:	giflib-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	libgs-devel
 BuildRequires:	ocaml-findlib-devel
 BuildRequires:	ocaml-lablgtk2-devel
-BuildRequires:	ungif-devel
 BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(gdk-2.0)
 BuildRequires:	pkgconfig(libexif)
@@ -36,10 +37,8 @@ BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	pkgconfig(xpm)
 BuildRequires:	pkgconfig(zlib)
-BuildRequires:	rgb
-BuildRequires:	ocaml-x11 
-
 Requires:	ghostscript
+Requires:	ocaml-x11
 
 %description
 This is an image processing library, which provides some basic
@@ -61,7 +60,7 @@ creates swap files and escapes them to reduce the memory usage).
 
 %package devel
 Summary:	Development files for camlimages
-Group:		Development/Other
+Group:		Development/OCaml
 Requires:	%{name} = %{EVRD}
 
 %description devel
