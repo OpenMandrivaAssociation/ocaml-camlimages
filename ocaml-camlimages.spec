@@ -17,6 +17,7 @@ Source1:	camlimages-2.2.0-htmlref.tar.gz
 # https://bitbucket.org/camlspotter/camlimages/issue/9
 Patch0:		ocaml-camlimages-4.1.0-exifcheck.patch
 Patch1:		ocaml-camlimages-4.1.0-ocaml3.patch
+Patch2:		ocaml-camlimages-4.1.0-kill-warn-error.patch
 
 BuildRequires:	chrpath
 BuildRequires:	ghostscript
@@ -36,6 +37,7 @@ BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	pkgconfig(xpm)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	rgb
+BuildRequires:	ocaml-x11 
 
 Requires:	ghostscript
 
@@ -81,6 +83,7 @@ Includes documentation provided by ocamldoc
 %setup -q -T -D -a 1 -n camlspotter-camlimages-668faa3494fe
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 omake CFLAGS="%{optflags}"
