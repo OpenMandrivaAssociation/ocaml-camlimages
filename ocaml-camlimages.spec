@@ -35,6 +35,8 @@ BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	pkgconfig(xpm)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	rgb
+
 Requires:	ghostscript
 
 %description
