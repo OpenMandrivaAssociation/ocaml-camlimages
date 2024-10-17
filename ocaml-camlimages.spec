@@ -8,7 +8,7 @@ Version:	4.1.0
 Release:	7
 License:	LGPLv2+
 Group:		Development/OCaml
-Url:		http://cristal.inria.fr/camlimages/eng.html
+Url:		https://cristal.inria.fr/camlimages/eng.html
 Source0:	https://bitbucket.org/camlspotter/camlimages/get/%{version}.tar.gz
 # This file isn't published any more (that I could find).
 # It's probably dated but at least should provide some info on how to
